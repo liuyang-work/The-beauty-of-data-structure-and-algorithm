@@ -83,8 +83,8 @@ def add(element):
         new_array = []                  # 重新申请数组
         for j in range(length):         # 把原来的数组元素copy到new_array
             new_array[j] = array[j]
-        array2 = new_array
-        length = 2 * length
+        array = new_array
+        length = (2 * length)
     array[i] = element                  # 将element放到小标为i的位置，小标i加1
     i += 1
 
