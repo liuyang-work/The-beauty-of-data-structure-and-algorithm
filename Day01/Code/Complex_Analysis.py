@@ -1,3 +1,13 @@
+# -*- coding: UTF-8 -*-
+"""
+@Project ：The-beauty-of-data-structure-and-algorithm 
+@File    ：Complex_Analysis.py
+@IDE     ：PyCharm 
+@Author  ：LiuYang
+@Date    ：2021/7/22 14:18 
+"""
+
+
 """
 求 1,2,3…n 的累加和
 """
