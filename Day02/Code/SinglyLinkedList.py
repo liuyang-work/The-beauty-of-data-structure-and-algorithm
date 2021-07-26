@@ -286,3 +286,11 @@ class SinglyLinkedList(object):
                 return True
 
         return False
+
+
+if __name__ == '__main__':
+    test = SinglyLinkedList()       # 创建链表对象
+    test.insert_to_head(4)
+    test.insert_to_head(6)
+    test.insert_to_head(7)
+    test.print_all()
