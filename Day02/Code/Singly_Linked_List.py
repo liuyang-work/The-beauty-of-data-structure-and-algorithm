@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 """
 @Project ：The-beauty-of-data-structure-and-algorithm 
-@File    ：singly_linked_list.py
+@File    ：Singly_Linked_List.py
 @IDE     ：PyCharm 
 @Author  ：LiuYang
 @Date    ：2021/7/26 15:04 
@@ -24,14 +24,14 @@ class SinglyLinkedList:
     def find_by_value(self, value: int) -> Optional[Node]:
         p = self._head
         while p and p.data != value:
-            p = p._next
+            p = p.next
         return p
 
     def find_by_index(self, index: int) -> Optional[Node]:
         p = self._head
         position = 0
         while p and position != index:
-            p = p._next
+            p = p.next
             position += 1
         return p
 
@@ -65,27 +65,27 @@ class SinglyLinkedList:
             self.insert_node_to_head(new_node)
             return
         current = self._head
-        while current._next and current._next != node:
-            current = current._next
-        if not current._next:  # 节点不再列表中
+        while current.next and current.next != node:
+            current = current.next
+        if not current.next:  # 节点不再列表中
             return
         new_node._next = node
-        current._next = new_node
+        current.next = new_node
 
     def delete_by_node(self, node: Node):
         if not self._head or not node:
             return
         if node._next:
             node.data = node._next.data
-            node._next = node._next._next
+            node._next = node._next.next
             return
         # 节点是最后一个节点或不再列表中
         current = self._head
-        while current and current._next != node:
-            current = current._next
+        while current and current.next != node:
+            current = current.next
         if not current:  # 节点不在列表中
             return
-        current._next = node._next
+        current.next = node._next
 
     def delete_by_value(self, value: int):
         if not self._head or not value:
@@ -97,7 +97,7 @@ class SinglyLinkedList:
             if current.data != value:
                 prev._next = current
                 prev = prev._next
-            current = current._next
+            current = current.next
         if prev._next:
             prev._next = None
         self._head = fake_head._next  # in case head.data == value
@@ -107,7 +107,7 @@ class SinglyLinkedList:
         current = self._head
         while current:
             nums.append(current.data)
-            current = current._next
+            current = current.next
         return "->".join(str(num) for num in nums)
 
     # 重写__iter__方法，方便for关键字调用打印值
@@ -115,16 +115,16 @@ class SinglyLinkedList:
         node = self._head
         while node:
             yield node.data
-            node = node._next
+            node = node.next
 
     def print_all(self):
         current = self._head
         if current:
             print(f"{current.data}", end="")
-            current = current._next
+            current = current.next
         while current:
             print(f"->{current.data}", end="")
-            current = current._next
+            current = current.next
         print("\n", flush=True)
 
 

@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 """
 @Project ：The-beauty-of-data-structure-and-algorithm 
-@File    ：palindrome.py
+@File    ：Palindrome.py
 @IDE     ：PyCharm 
 @Author  ：LiuYang
 @Date    ：2021/7/26 15:06 
@@ -9,7 +9,7 @@
 import sys
 # 引用当前文件夹下的single_linked_list
 sys.path.append('singly_linked_list')
-from singly_linked_list import SinglyLinkedList
+from Singly_Linked_List import SinglyLinkedList
 
 def reverse(head):
     reverse_head = None
@@ -26,9 +26,9 @@ def is_palindrome(l):
     slow = l._head
     fast = l._head
     position = 0
-    while fast and fast._next:
-        slow = slow._next
-        fast = fast._next._next
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
         position += 1
 
     reverse_node = reverse(slow)
@@ -36,7 +36,7 @@ def is_palindrome(l):
     is_palin = True
     while (head_node and reverse_node):
         if (head_node.data == reverse_node.data):
-            head_node = head_node._next
+            head_node = head_node.next
             reverse_node = reverse_node._next
         else:
             is_palin = False

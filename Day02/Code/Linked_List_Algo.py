@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 """
 @Project ：The-beauty-of-data-structure-and-algorithm 
-@File    ：linked_list_algo.py
+@File    ：Linked_List_Algo.py
 @IDE     ：PyCharm 
 @Author  ：LiuYang
 @Date    ：2021/7/26 15:13 
@@ -38,7 +38,7 @@ def has_cycle(head: Node) -> bool:
     slow, fast = head, head
     while fast and fast._next:
         slow = slow._next
-        fast = fast._next._next
+        fast = fast._next.next
         if slow == fast:
             return True
     return False
@@ -79,7 +79,7 @@ def remove_nth_from_end(head: Node, n: int) -> Optional[Node]:
     slow = head
     while fast._next:
         fast, slow = fast._next, slow._next
-    slow._next = slow._next._next
+    slow._next = slow._next.next
     return head
 
 
@@ -87,7 +87,7 @@ def find_middle_node(head: Node) -> Optional[Node]:
     slow, fast = head, head
     fast = fast._next if fast else None
     while fast and fast._next:
-        slow, fast = slow._next, fast._next._next
+        slow, fast = slow._next, fast._next.next
     return slow
 
 
