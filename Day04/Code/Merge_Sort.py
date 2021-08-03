@@ -14,29 +14,29 @@ def merge_sort(a: List[int]):
 
 
 def _merge_sort_between(a: List[int], low: int, high: int):
-    # 指数包括低和高
+    # low指向起始，high指向末尾
     if low < high:
-        mid = low + (high - low) // 2
-        _merge_sort_between(a, low, mid)
-        _merge_sort_between(a, mid + 1, high)
-        _merge(a, low, mid, high)
+        mid = low + (high - low) // 2  # 中间区分位置
+        _merge_sort_between(a, low, mid)  # 左边排序
+        _merge_sort_between(a, mid + 1, high)  # 右边排序
+        _merge(a, low, mid, high)  # 合并
 
 
 def _merge(a: List[int], low: int, mid: int, high: int):
     # a[low:mid], a[mid+1:high] 已经排序好
     i, j = low, mid + 1
     tmp = []
-    while i <= mid and j <= high:
+    while i <= mid and j <= high:  # 合并排序好的数组
         if a[i] <= a[j]:
             tmp.append(a[i])
             i += 1
         else:
             tmp.append(a[j])
             j += 1
-    start = i if i <= mid else j
+    start = i if i <= mid else j  # 如果一个区间没有了，剩下的全部合并即可
     end = mid if i <= mid else high
     tmp.extend(a[start:end + 1])
-    a[low:high + 1] = tmp
+    a[low:high + 1] = tmp  # 拷贝到原数组
 
 
 def test_merge_sort():
