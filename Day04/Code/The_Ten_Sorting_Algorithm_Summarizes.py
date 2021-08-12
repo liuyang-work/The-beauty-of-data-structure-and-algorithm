@@ -161,11 +161,11 @@ def quick_sort_between(arr, start, end):
 def heap_sort(arr):
     length = len(arr) - 1
     first_sort_count = length // 2
-    for i in range(first_sort_count):
+    for i in range(first_sort_count):   # 把序列调整为大顶堆
         heap_adjust(arr, first_sort_count - i, length)
 
     for i in range(length - 1):
-        arr = swap_param(arr, 1, length - i)
+        arr = swap_param(arr, 1, length - i)    # 把堆顶元素和堆末尾的元素交换，然后把剩下的元素调整为一个大根堆
         heap_adjust(arr, 1, length - i - 1)
 
     return [arr[i] for i in range(1, len(arr))]
@@ -187,7 +187,7 @@ def heap_adjust(arr, start, end):
     arr[i] = temp
 
 
-def swap_param(arr, i, j):
+def swap_param(arr, i, j):  # 交换堆顶和堆底节点
     arr[i], arr[j] = arr[j], arr[i]
     return arr
 ###########################################################################
