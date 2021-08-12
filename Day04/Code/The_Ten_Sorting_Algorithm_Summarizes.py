@@ -7,7 +7,7 @@
 @Date    ：2021/8/4 11:01 
 """
 import random
-
+from collections import deque
 """
 十大排序算法总结：
 1.冒泡排序     (Bubbling sort)
@@ -158,11 +158,40 @@ def quick_sort_between(arr, start, end):
 
 
 # 堆排序 (Heap sort ) ######################################################
-def heap_sort():
-    pass
+def heap_sort(arr):
+    length = len(arr) - 1
+    first_sort_count = length // 2
+    for i in range(first_sort_count):
+        heap_adjust(arr, first_sort_count - i, length)
+
+    for i in range(length - 1):
+        arr = swap_param(arr, 1, length - i)
+        heap_adjust(arr, 1, length - i - 1)
+
+    return [arr[i] for i in range(1, len(arr))]
 
 
+def heap_adjust(arr, start, end):
+    temp = arr[start]
+    i = start
+    j = 2 * i
+    while j <= end:
+        if j < end and arr[j] < arr[j + 1]:
+            j += 1
+        if temp < arr[j]:
+            arr[i] = arr[j]
+            i = j
+            j = 2 * i
+        else:
+            break
+    arr[i] = temp
+
+
+def swap_param(arr, i, j):
+    arr[i], arr[j] = arr[j], arr[i]
+    return arr
 ###########################################################################
+
 
 # 计数排序(Counting sort)######################################################
 def counting_sort(arr):
@@ -287,7 +316,7 @@ def shell_sort_test():
     array_test = [9, 8, 7, 1, 2, 3, 6, 5, 4]
     shell_sort(array_test)
     assert array_test == [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    print("插入排序后的结果：\n")
+    print("希尔排序后的结果：\n")
     print(array_test)
 
 
@@ -307,6 +336,17 @@ def quick_sort_test():
     assert array_test == [1, 2, 3, 4, 5, 6, 7, 8, 9]
     print("快速排序后的结果：\n")
     print(array_test)
+
+
+# 堆排序测试
+def heap_sort_test():
+    array_test = deque([9, 8, 7, 1, 2, 3, 6, 5, 4])
+    array_test.appendleft(0)
+    heap_sort(array_test)
+    array_test = list(array_test)
+    array_test.pop(0)
+    print("堆排序后的结果：\n")
+    print(list(array_test))
 
 
 # 桶排序测试
@@ -344,6 +384,7 @@ if __name__ == "__main__":  # 测试算法
     shell_sort_test()
     merge_sort_test()
     quick_sort_test()
+    heap_sort_test()
     bucket_sort_test()
     counting_sort_test()
     cardinality_sort_test()
