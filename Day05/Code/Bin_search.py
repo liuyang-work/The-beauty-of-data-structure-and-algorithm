@@ -116,7 +116,7 @@ def bin_research3(arr, n, value):
     return -1
 
 
-# 二分查找变形 1.查找第一个值小于等于给定值的元素
+# 二分查找变形 4.查找第一个值小于等于给定值的元素
 def bin_research4(arr, n, value):
     low = 0
     high = n - 1
