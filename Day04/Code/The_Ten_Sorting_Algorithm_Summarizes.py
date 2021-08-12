@@ -378,13 +378,13 @@ def cardinality_sort_test():
 
 if __name__ == "__main__":  # 测试算法
 
-    bubbling_sort_test()
-    select_sort_test()
-    insertion_sort_test()
-    shell_sort_test()
-    merge_sort_test()
-    quick_sort_test()
-    heap_sort_test()
-    bucket_sort_test()
-    counting_sort_test()
-    cardinality_sort_test()
+    bubbling_sort_test()        # 冒泡排序
+    select_sort_test()          # 选择排序
+    insertion_sort_test()       # 插入排序
+    shell_sort_test()           # 希尔排序
+    merge_sort_test()           # 归并排序
+    quick_sort_test()           # 快速排序
+    heap_sort_test()            # 堆排序
+    bucket_sort_test()          # 桶排序
+    counting_sort_test()        # 计数排序
+    cardinality_sort_test()     # 基数排序
