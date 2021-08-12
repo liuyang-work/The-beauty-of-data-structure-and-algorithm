@@ -77,8 +77,19 @@ def insertion_sort(arr):
 
 
 # 希尔排序(Shell Sort)######################################################
-def shell_sort():
-    pass
+def shell_sort(arr):
+    length = len(arr)  # 数组的长度
+    gap = length // 2  # 选择增量为length/2,
+    while gap > 0:
+        for i in range(gap, length):  # 排序每一组
+            temp = arr[i]
+            preIndex = i - gap
+            while preIndex >= 0 and arr[preIndex] > temp:  # 交换排序
+                arr[preIndex + gap] = arr[preIndex]
+                preIndex -= gap
+            arr[preIndex + gap] = temp
+        gap //= 2  # 持续缩小增量
+    return arr
 
 
 ###########################################################################
@@ -271,6 +282,15 @@ def insertion_sort_test():
     print(array_test)
 
 
+# 希尔排序测试
+def shell_sort_test():
+    array_test = [9, 8, 7, 1, 2, 3, 6, 5, 4]
+    shell_sort(array_test)
+    assert array_test == [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    print("插入排序后的结果：\n")
+    print(array_test)
+
+
 # 归并排序测测试
 def merge_sort_test():
     array_test = [9, 8, 7, 1, 2, 3, 6, 5, 4]
@@ -321,6 +341,7 @@ if __name__ == "__main__":  # 测试算法
     bubbling_sort_test()
     select_sort_test()
     insertion_sort_test()
+    shell_sort_test()
     merge_sort_test()
     quick_sort_test()
     bucket_sort_test()
