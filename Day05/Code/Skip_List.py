@@ -1,4 +1,3 @@
-
 # -*- coding: UTF-8 -*-
 """
 @Project ：The-beauty-of-data-structure-and-algorithm 
@@ -8,88 +7,112 @@
 @Date    ：2021/8/10 14:27 
 """
 import random
-from typing import Optional
-"""
-    跳表的一种实现方法，并且存储的是不重复的正整数
-"""
 
 
-class ListNode:
+class skip_list_node(object):
+    def __init__(self, value, high=1):
+        # 节点存储的值
+        self.data = value
+        # 节点对应索引层的深度
+        self.deeps = [None] * high
 
-    def __init__(self, data: Optional[int] = None):
-        self.data = data    # 节点数据
-        self.forwards = []  # 前向指针
 
-
-class SkipList:
-    _MAX_LEVEL = 16
+class skip_list(object):
+    """
+         跳表的一种实现方法。
+         跳表中储存的是不重复的正整数
+     """
 
     def __init__(self):
-        self._level_count = 1
-        self._head = ListNode()
-        self._head.forwards = [None] * type(self)._MAX_LEVEL
+        # 索引层的最大深度
+        self.MAX_LEVEL = 16
+        # 跳表的高度
+        self.high = 1
+        # 每一索引层的首节点，默认值为None
+        self.head = skip_list_node(None, self.MAX_LEVEL)
 
-    def find(self, value: int) -> Optional[ListNode]:
-        p = self._head
-        for i in range(self._level_count - 1, -1, -1):  # 向下移动一个级别
-            while p.forwards[i] and p.forwards[i].data < value:
-                p = p.forwards[i]  # 沿水平移动
+    def find(self, value):
+        cur = self.head
+        # 从索引的顶层, 逐层定位要查找的值
+        # 索引层上下是对应的, 下层的起点是上一个索引层中小于插入值的最大值对应的节点
+        for i in range(self.high - 1, -1, -1):
+            # 同一索引层内, 查找小于插入值的最大值对应的节点
+            while cur.deeps[i] and cur.deeps[i].data < value:
+                cur = cur.deeps[i]
 
-        return p.forwards[0] if p.forwards[0] and p.forwards[0].data == value else None
+        if cur.deeps[0] and cur.deeps[0].data == value:
+            return cur.deeps[0]
+        return None
 
-    def insert(self, value: int):
-        level = self._random_level()
-        if self._level_count < level: self._level_count = level
-        new_node = ListNode(value)
-        new_node.forwards = [None] * level
-        update = [self._head] * level  # 更新就像一个prevs列表
+    def insert(self, value):
+        """
+            新增时, 通过随机函数获取要更新的索引层数,
+            要对低于给定高度的索引层添加新结点的指针
+        """
+        high = self.randomLevel()
+        if self.high < high:
+            self.high = high
 
-        p = self._head
-        for i in range(level - 1, -1, -1):
-            while p.forwards[i] and p.forwards[i].data < value:
-                p = p.forwards[i]
+        # 申请新节点
+        newNode = skip_list_node(value, high)
+        # cache用来缓存对应索引层中小于插入值的最大节点
+        cache = [self.head] * high
+        cur = self.head
 
-            update[i] = p  # 找到了一个上一个
-
-        for i in range(level):
-            new_node.forwards[i] = update[i].forwards[i]  # new_node.next = prev.next
-            update[i].forwards[i] = new_node  # prev.next = new_node
+        # 低于随机高度的每一个索引层寻找小于插入值的节点
+        for i in range(high - 1, -1, -1):
+            # 每个索引层内寻找小于待插入值的节点
+            # 索引层上下是对应的, 下层的起点是上一个索引层中小于插入值的最大值对应的节点
+            while cur.deeps[i] and cur.deeps[i].data < value:
+                cur = cur.deeps[i]
+            cache[i] = cur
+        # 在小于高度的每个索引层中插入新节点
+        for i in range(high):
+            newNode.deeps[i] = cache[i].deeps[i]
+            cache[i].deeps[i] = newNode
 
     def delete(self, value):
-        update = [None] * self._level_count
-        p = self._head
-        for i in range(self._level_count - 1, -1, -1):
-            while p.forwards[i] and p.forwards[i].data < value:
-                p = p.forwards[i]
-            update[i] = p
+        """
+        删除时，要将每个索引层中对应的节点都删除
+        """
+        # cache用来缓存对应索引层中小于插入值的最大节点
+        cache = [None] * self.high
+        cur = self.head
+        # 缓存每一个索引层定位小于插入值的节点
+        for i in range(self.high - 1, -1, -1):
+            while cur.deeps[i] and cur.deeps[i].data < value:
+                cur = cur.deeps[i]
+            cache[i] = cur
+        # 如果给定的值存在, 更新索引层中对应的节点
+        if cur.deeps[0] and cur.deeps[0].data == value:
+            for i in range(self.high):
+                if cache[i].deeps[i] and cache[i].deeps[i].data == value:
+                    cache[i].deeps[i] = cache[i].deeps[i].deeps[i]
 
-        if p.forwards[0] and p.forwards[0].data == value:
-            for i in range(self._level_count - 1, -1, -1):
-                if update[i].forwards[i] and update[i].forwards[i].data == value:
-                    update[i].forwards[i] = update[i].forwards[i].forwards[
-                        i]  # 类似于 prev.next = prev.next.next
+    def randomLevel(self, p=0.25):  # 随机函数，平衡索引层
+        high = 1
+        for _ in range(self.MAX_LEVEL - 1):
+            if random.random() < p:
+                high += 1
+        return high
 
-    def _random_level(self, p: float = 0.5) -> int:
-        level = 1
-        while random.random() < p and level < type(self)._MAX_LEVEL:
-            level += 1
-        return level
-
-    def __repr__(self) -> str:
+    def __repr__(self): # 重写输出方式
         values = []
-        p = self._head
-        while p.forwards[0]:
-            values.append(str(p.forwards[0].data))
-            p = p.forwards[0]
-        return "->".join(values)
+        p = self.head
+        while p.deeps[0]:
+            values.append(str(p.deeps[0].data))
+            p = p.deeps[0]
+        return '->'.join(values)
 
 
 if __name__ == "__main__":
-    l = SkipList()
-    for i in range(10):
-        l.insert(i)
-    print(l)
-    p = l.find(7)
+    test1 = skip_list()
+    for i in range(100):
+        test1.insert(i)
+    print(test1)
+    p = test1.find(8)
     print(p.data)
-    l.delete(3)
-    print(l)
+    test1.delete(37)
+    print(test1)
+    test1.delete(37.5)
+    print(test1)
